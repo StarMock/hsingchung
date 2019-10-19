@@ -1,0 +1,23 @@
+unsigned char calcCRC(unsigned char *pdat, unsigned int len)
+{
+    unsigned char j;
+    unsigned char crc = 0xFF;
+    while(len--)
+	{
+        crc ^= (*pdat++);//前一字节计算CRC后的结果异或上后一字节，再次计算CRC
+        for (j=8; j>0; j--)
+        {
+            if (crc & 0x80)//高位为1，需要异或
+            {
+                crc <<= 1;
+                crc ^= FACTOR;
+            }
+            else        //高位为0，不需要异或
+            {
+                crc <<= 1;
+            }
+        }
+    }
+	crc=crc^0xff;
+   return crc;
+}
